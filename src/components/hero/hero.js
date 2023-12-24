@@ -1,6 +1,6 @@
 function Hero() {
     return(
-        <h1>bonsoir</h1>
+        <h1>Merry Christmas</h1>
     );
 };
 
