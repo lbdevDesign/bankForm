@@ -1,0 +1,38 @@
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 12px;
+    border-radius: 8px;
+    border: solid 1px $lightGrayViolet;
+    &::placeholder {
+        font-family: $spaceG;
+        font-size: 16px;
+        font-weight: 700;
+        color: $darkGrayViolet;
+        opacity: 50%;
+    }
+}
+
+.form {
+    margin: 64px 28px 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+    &__input {
+        margin: 24px 0 0 0;
+        &__title {
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: $veryDarkGrayViolet;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        &__cexpiration {
+            width: 165px;
+            &--container {
+                display: flex;
+            }
+        }
+    }
+}
+
