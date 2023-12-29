@@ -1,6 +1,19 @@
-.input {
-    width: 100%;
+.largeInput {
+    padding: 16px 12px;
+    border-radius: 8px;
+    border: solid 1px $lightGrayViolet;
     box-sizing: border-box;
+    width: 317px;
+    &::placeholder {
+        font-family: $spaceG;
+        font-size: 16px;
+        font-weight: 700;
+        color: $darkGrayViolet;
+        opacity: 50%;
+    }
+}
+
+.smallInput {
     padding: 16px 12px;
     border-radius: 8px;
     border: solid 1px $lightGrayViolet;
@@ -14,11 +27,19 @@
 }
 
 .form {
-    margin: 64px 28px 0 28px;
     display: flex;
     flex-wrap: wrap;
+    &__container {
+        box-sizing: border-box;
+        padding: 64px 28px 0 28px;
+        min-width: 100vw;
+    }
     &__input {
         margin: 24px 0 0 0;
+        &__bottom {
+            margin: 24px 0 0 0;
+            width: 50%;
+        }
         &__title {
             margin: 0 0 8px 0;
             font-size: 12px;
@@ -28,10 +49,15 @@
             letter-spacing: 2px;
         }
         &__cexpiration {
-            width: 165px;
+            width: 44px;
+            margin-right: 8px;
             &--container {
+                width: 50%;
                 display: flex;
             }
+        }
+        &__cvc {
+            width: 50px;
         }
     }
 }
