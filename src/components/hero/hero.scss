@@ -67,3 +67,55 @@
         }
     }
 }
+
+@media screen and (min-width: 1080px) {
+    .hero {
+        background-image: url('../../assets/bg-main-desktop.png');
+        height: 100%; 
+        width: 350px;
+        position: fixed;
+        z-index: 1;
+        top: 0; 
+        left: 0;
+        justify-content: center;
+        &__verso {
+            margin: 0 0 0 332px;
+            &__img {
+                width: 400px;
+            }
+            &__security {
+                left: 320px;
+                top: 80px;
+                font-size: 16px;
+            }
+        }
+        &__recto {
+            margin: -400px 0 0 200px;
+            &__cardLogo {
+                width: 74px;
+                left: 28px;
+                top: 28px;
+            }
+            &__number {
+                font-size: 24px;
+                font-weight: 500;
+                left: 28px;
+                top: 100px;
+            }
+            &__infos {
+                width: 336px;
+                left: 28px;
+                top: 164px;
+                &__name {
+                    font-size: 14px;
+                }
+                &__expiration {
+                    font-size: 14px;
+                }
+            }
+            &__img {
+                width: 400px;
+            }
+        }
+    }
+}
