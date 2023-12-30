@@ -3,7 +3,7 @@
     border-radius: 8px;
     border: solid 1px $lightGrayViolet;
     box-sizing: border-box;
-    width: 317px;
+    width: 100%;
     &::placeholder {
         font-family: $spaceG;
         font-size: 16px;
@@ -27,19 +27,41 @@
 }
 
 .form {
-    display: flex;
-    flex-wrap: wrap;
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 4px;
+    grid-row-gap: 24px;
     &__container {
         box-sizing: border-box;
         padding: 64px 28px 0 28px;
         min-width: 100vw;
     }
+    &__input1 {
+        grid-area: 1 / 1 / 2 / 3; 
+    }
+    &__input2 {
+        grid-area: 2 / 1 / 3 / 3;
+    }
+    &__input3 {
+        grid-area: 3 / 1 / 4 / 2; 
+    }
+    &__input4 {
+        grid-area: 3 / 2 / 4 / 3; 
+    }
+    &__submit {
+        margin-top: 8px;
+        grid-area: 4 / 1 / 5 / 3;
+        border: none;
+        border-radius: 8px;
+        background-color: $veryDarkGrayViolet;
+        color: $white;
+        font-family: $spaceG;
+        font-size: 20px;
+        font-weight: 700;
+    }
     &__input {
-        margin: 24px 0 0 0;
-        &__bottom {
-            margin: 24px 0 0 0;
-            width: 50%;
-        }
         &__title {
             margin: 0 0 8px 0;
             font-size: 12px;
@@ -52,12 +74,8 @@
             width: 44px;
             margin-right: 8px;
             &--container {
-                width: 50%;
                 display: flex;
             }
-        }
-        &__cvc {
-            width: 50px;
         }
     }
 }
