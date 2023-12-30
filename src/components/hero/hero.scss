@@ -9,7 +9,7 @@
         position: relative;
         margin: 32px 0 0 64px;
         height: 150px;
-        -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35); 
+        -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.25); 
         box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35);
         &__security {
             font-size: 12px;
@@ -26,7 +26,7 @@
         position: relative;
         margin: -64px 0 0 -56px;
         height: 150px;
-        -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35); 
+        -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.25); 
         box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35);
         &__cardLogo {
             width: 56px;
@@ -80,6 +80,8 @@
         justify-content: center;
         &__verso {
             margin: 0 0 0 332px;
+            height: 219px;
+            width: 390px;
             &__img {
                 width: 400px;
             }
@@ -90,7 +92,9 @@
             }
         }
         &__recto {
-            margin: -400px 0 0 200px;
+            margin: -480px 0 0 200px;
+            height: 219px;
+            width: 390px;
             &__cardLogo {
                 width: 74px;
                 left: 28px;

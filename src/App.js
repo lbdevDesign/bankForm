@@ -4,8 +4,8 @@ import Form from "./components/form/form";
 function App() {
   return (
     <> 
-    <Hero />
-    <Form />
+      <Hero />
+      <Form />
     </>
   );
 }
