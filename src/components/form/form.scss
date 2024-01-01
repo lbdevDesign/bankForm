@@ -4,6 +4,8 @@
     border: solid 1px $lightGrayViolet;
     box-sizing: border-box;
     width: 100%;
+    font-family: $spaceG;
+    font-size: 16px;
     &::placeholder {
         font-family: $spaceG;
         font-size: 16px;
@@ -17,6 +19,8 @@
     padding: 16px 12px;
     border-radius: 8px;
     border: solid 1px $lightGrayViolet;
+    font-family: $spaceG;
+    font-size: 16px;
     &::placeholder {
         font-family: $spaceG;
         font-size: 16px;
