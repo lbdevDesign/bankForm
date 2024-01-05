@@ -86,11 +86,6 @@ function Form() {
     dispatch(setFormValue('cardNumber', formattedValue));
   }, [val, dispatch]);
 
-  const validateCardNumber = (value) => {
-    const containsLetter = /[a-zA-Z]/.test(value);
-    return !containsLetter;
-  };
-
   function cn_format(value) {
     const v = value
       .replace(/\s+/g, "")
@@ -137,14 +132,14 @@ function Form() {
               className={`form__input__cexpiration smallInput ${errors.cardExpMM ? 'error-border' : ''}`}
               type="tel"
               placeholder="MM"
-              pattern='\d\d'
+              maxLength={2} 
               onChange={(e) => onChange(e, 'cardExpMM')}
             />
             <input
               className={`form__input__cexpiration smallInput ${errors.cardExpYY ? 'error-border' : ''}`}
               type="tel"
               placeholder="YY"
-              pattern='\d\d'
+              maxLength={2} 
               onChange={(e) => onChange(e, 'cardExpYY')}
             />
           </div>
@@ -156,7 +151,7 @@ function Form() {
             className={`form__input__cvc smallInput ${errors.cardCvc ? 'error-border' : ''}`}
             type="tel"
             placeholder="e.g. 123"
-            pattern="\d{3}"
+            maxLength={3} 
             onChange={(e) => onChange(e, 'cardCvc')}
           />
           {errors.cardCvc && <p className="error-message">Can't be blank</p>}
