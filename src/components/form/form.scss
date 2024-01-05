@@ -64,6 +64,14 @@
         font-family: $spaceG;
         font-size: 20px;
         font-weight: 700;
+        cursor: pointer;
+        &:hover {
+            -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.25); 
+            box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35);
+        }
+        &:active {
+            box-shadow: none;
+        }
     }
     &__input {
         &__title {
@@ -82,6 +90,16 @@
             }
         }
     }
+}
+
+.error-message {
+    font-size: 14px;
+    margin: 4px 0 0 0;
+    color: $red;
+}
+
+.error-border {
+    border: solid 1px $red;
 }
 
 @media screen and (min-width: 1080px) {
