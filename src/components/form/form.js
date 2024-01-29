@@ -1,162 +1,193 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { setFormValue, submitForm } from '../../redux/action';
 
+/**
+ * Composant Formulaire pour la saisie des détails de carte de crédit.
+ * Utilise react-hook-form pour la gestion du formulaire et interagit avec Redux.
+ */
 function Form() {
   const dispatch = useDispatch();
-  const { handleSubmit, formState: { errors }, setError } = useForm();
-  const [val, setVal] = useState("");
+  const [cardholderName, setCardholderName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpMM, setCardExpMM] = useState('');
+  const [cardExpYY, setCardExpYY] = useState('');
+  const [cardCvc, setCardCvc] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const onSubmit = (data) => {
-    let hasErrors = false;
-  
-    // Vérifier si le champ cardholderName est vide
-    if (!data.cardholderName) {
-      setError('cardholderName', {
-        type: 'manual',
-        message: 'Can\'t be blank',
-      });
-      hasErrors = true;
-    }
-  
-    // Vérifier si le champ cardNumber est vide
-    if (!data.cardNumber) {
-      setError('cardNumber', {
-        type: 'manual',
-        message: 'Can\'t be blank',
-      });
-      hasErrors = true;
-    }
-  
-    // Vérifier si le champ cardExpMM est vide
-    if (!data.cardExpMM) {
-      setError('cardExpMM', {
-        type: 'manual',
-        message: 'Can\'t be blank',
-      });
-      hasErrors = true;
-    }
-  
-    // Vérifier si le champ cardExpYY est vide
-    if (!data.cardExpYY) {
-      setError('cardExpYY', {
-        type: 'manual',
-        message: 'Can\'t be blank',
-      });
-      hasErrors = true;
-    }
-  
-    // Vérifier si le champ cardCvc est vide
-    if (!data.cardCvc) {
-      setError('cardCvc', {
-        type: 'manual',
-        message: 'Can\'t be blank',
-      });
-      hasErrors = true;
-    }
-  
-    // Si des erreurs sont détectées, ne pas soumettre le formulaire
-    if (hasErrors) {
-      return;
-    }
-  
-    // Soumettre le formulaire si aucune erreur n'est détectée
-    dispatch(submitForm(data));
-  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const onChange = (e, field) => {
-    const inputValue = e.target.value;
-    let formattedValue = inputValue;
+    // Validate form fields
+    const isValid = () => {
+      return (
+        cardholderName.length &&
+        cardNumber.match(/^[0-9]{16}$/) &&
+        cardExpMM.length &&
+        cardExpYY.length &&
+        cardCvc.length === 3
+      );
+    };
 
-    if (field === 'cardExpMM') {
-      const numericValue = parseInt(inputValue, 10);
-      if (!isNaN(numericValue) && numericValue >= 1 && numericValue <= 12) {
-        formattedValue = inputValue;
+    if (!isValid) {
+      if (!cardholderName) {
+        setErrors({cardholderName: 'Cardholder name is required'});
+      } if (!cardNumber.match(/^[0-9]{16}$/)) {
+        setErrors({cardNumber: 'Card number is invalid'});
+      } if (!cardExpMM.length || cardExpMM.length < 2) {
+        setErrors({ cardExpMM: 'Expiration is required'});
+      } if (!cardExpYY.length || cardExpYY.length < 2) {
+        setErrors({ cardExpYY: 'Expiration is required'});
+      } if (!cardCvc.length || cardCvc.length < 3) {
+        setErrors({cardCvc: 'CVC is required (3 digits)'});
       }
     } else {
-      formattedValue = cn_format(inputValue);
+      setErrors({});
+    };
+
+    // Form is valid, submit to Redux action
+    if (isValid) {
+      const data = {
+        cardholderName,
+        cardNumber,
+        cardExpMM,
+        cardExpYY,
+        cardCvc,
+      };
+      dispatch(submitForm(data));
     }
 
-    dispatch(setFormValue(field, formattedValue));
+    console.log(errors);
+
   };
 
-  useEffect(() => {
-    const formattedValue = cn_format(val);
-    dispatch(setFormValue('cardNumber', formattedValue));
-  }, [val, dispatch]);
+  function formatCardholderName(name) {
+    const words = name.split(' ');
+    const formattedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+    return formattedWords.join(' ');
+  }
 
-  function cn_format(value) {
-    const v = value
-      .replace(/\s+/g, "")
-      .replace(/[^0-9]/gi, "")
-      .substr(0, 16);
+  function formatCardNumber(value) {
+    const v = value.replace(/[^0-9]/gi, "").substr(0, 16);
     const parts = [];
-
     for (let i = 0; i < v.length; i += 4) {
       parts.push(v.substr(i, 4));
     }
-
-    return parts.length > 1 ? parts.join(" ") : value;
+    return parts.join(" ");
   }
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    switch (name) {
+      case 'cardholderName':
+        setCardholderName(formatCardholderName(value));
+        dispatch(setFormValue('cardholderName', value));
+        break;
+      case 'cardNumber':
+        setCardNumber(value);
+        dispatch(setFormValue('cardNumber', value));
+        break;
+      case 'cardExpMM':
+        setCardExpMM(value);
+        dispatch(setFormValue('cardExpMM', value));
+        break;
+      case 'cardExpYY':
+        setCardExpYY(value);
+        dispatch(setFormValue('cardExpYY', value));
+        break;
+      case 'cardCvc':
+        setCardCvc(value);
+        dispatch(setFormValue('cardCvc', value));
+        break;
+    }
+
+    console.log(cardNumber);
+  };
+
+  useEffect(() => {
+    const formattedCardNumber = formatCardNumber(cardNumber);
+    setCardNumber(formattedCardNumber);
+  }, [cardNumber]);
+
 
   return (
     <section className="form__container">
-      <form onSubmit={handleSubmit(onSubmit)} className='form'>
+      <form onSubmit={handleSubmit} className='form'>
+
+        {/* Champ pour le nom de la carte */}
         <div className='form__input1'>
           <p className='form__input__title'>Cardholder Name</p>
           <input
+            name='cardholderName'
             className={`form__input__cname largeInput ${errors.cardholderName ? 'error-border' : ''}`}
             type="text"
             placeholder="e.g. Jane Appleseed"
-            onChange={(e) => onChange(e, 'cardholderName')}
+            maxLength={32} 
+            value={cardholderName}
+            onChange={handleChange}
           />
-          {errors.cardholderName && <p className="error-message">Can't be blank</p>}
+          {errors.cardholderName && <p className="error-message">{errors.cardholderName}</p>}
         </div>
+
+        {/* Champ pour le numéro de carte */}
         <div className='form__input2'>
           <p className='form__input__title'>Card Number</p>
           <input
-            className={`form__input__cnumber largeInput ${errors.cardNumber || errors.cardNumberLetter ? 'error-border' : ''}`}
+            name='cardNumber'
+            className={`form__input__cnumber largeInput ${errors.cardNumber ? 'error-border' : ''}`}
             type="tel"
             placeholder="e.g. 1234 5678 9123 0000"
-            value={cn_format(val)}
-            onChange={(e) => setVal(e.target.value)}
+            maxLength={19} 
+            value={cardNumber}
+            onChange={handleChange}
           />
-          {errors.cardNumber && <p className="error-message">Can't be blank</p>}
-          {errors.cardNumberLetter && <p className="error-message">Wrong format, numbers only</p>}
+          {errors.cardNumber && <p className="error-message">{errors.cardNumber}</p>}
         </div>
+
+        {/* Champ pour la date d'expiration */}
         <div className='form__input3'>
           <p className='form__input__title'>Exp. Date (MM/YY)</p>
           <div className='form__input__cexpiration--container'>
             <input
+              name='cardExpMM'
               className={`form__input__cexpiration smallInput ${errors.cardExpMM ? 'error-border' : ''}`}
               type="tel"
               placeholder="MM"
               maxLength={2} 
-              onChange={(e) => onChange(e, 'cardExpMM')}
+              value={cardExpMM}
+              onChange={handleChange}
             />
             <input
+              name='cardExpYY'
               className={`form__input__cexpiration smallInput ${errors.cardExpYY ? 'error-border' : ''}`}
               type="tel"
               placeholder="YY"
               maxLength={2} 
-              onChange={(e) => onChange(e, 'cardExpYY')}
+              value={cardExpYY}
+              onChange={handleChange}
             />
           </div>
-          {errors.cardExpMM && <p className="error-message">Can't be blank</p>}
+          {(errors.cardExpMM || errors.cardExpYY) && <p className="error-message">{errors.cardExpMM}</p>}
         </div>
+
+        {/* Champ pour le CVC */}
         <div className='form__input4'>
           <p className='form__input__title'>CVC</p>
           <input
+            name='cardCvc'
             className={`form__input__cvc smallInput ${errors.cardCvc ? 'error-border' : ''}`}
             type="tel"
             placeholder="e.g. 123"
             maxLength={3} 
-            onChange={(e) => onChange(e, 'cardCvc')}
+            value={cardCvc}
+            onChange={handleChange}
           />
-          {errors.cardCvc && <p className="error-message">Can't be blank</p>}
+          {errors.cardCvc && <p className="error-message">{errors.cardCvc}</p>}
         </div>
 
+        {/* Bouton de soumission du formulaire */}
         <input type="submit" className='form__submit' value='Confirm' />
       </form>
     </section>

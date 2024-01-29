@@ -13,6 +13,7 @@ function Hero() {
     const cardExpYY = formData.cardExpYY || "00";
     const cardCvc = formData.cardCvc || "000";
 
+
     const formattedExpiration = `${cardExpMM}/${cardExpYY}`;
 
     return(
