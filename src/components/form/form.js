@@ -54,8 +54,6 @@ function Form() {
 
     const validForm = isValid();
 
-    console.log(validForm);
-
     if (!validForm) {
       if (!cardCvc.length || cardCvc.length < 3) {
         setErrors({cardCvc: 'CVC is required (3 digits)'});
@@ -86,6 +84,8 @@ function Form() {
         cardCvc,
       };
       dispatch(submitForm(data));
+      localStorage.setItem("formSubmitted", JSON.stringify(true));
+      window.location.reload();
     }
 
   };

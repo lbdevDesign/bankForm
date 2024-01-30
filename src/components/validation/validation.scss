@@ -1,0 +1,52 @@
+.validation {
+    margin-top: 72px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__img {
+        width: 72px;
+    }
+    &__title {
+        font-family: $spaceG;
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 4px;
+        color: $veryDarkGrayViolet;
+        margin-bottom: 0px;
+    }
+    &__text {
+        font-family: $spaceG;
+        font-weight: 500;
+        color: $darkGrayViolet;
+    }
+    &__button {
+        border: none;
+        margin-top: 24px;
+        padding: 12px 100px;
+        border-radius: 8px;
+        background-color: $veryDarkGrayViolet;
+        color: $white;
+        font-family: $spaceG;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        &:hover {
+            -webkit-box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.25); 
+            box-shadow: 1px 7px 27px 3px rgba(0,0,0,0.35);
+        }
+        &:active {
+            box-shadow: none;
+        }
+    }
+}
+
+@media screen and (min-width: 1080px) {
+    .validation {
+        padding: 0 0 0 450px;
+        height: 100vh;
+        width: 60%;
+        margin: 0px;
+        justify-content: center;
+    }
+}
