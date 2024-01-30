@@ -7,7 +7,10 @@ import { setFormValue, submitForm } from '../../redux/action';
  * @component
  */
 function Form() {
+  // Utilisation du hook useDispatch pour accéder à la fonction dispatch de Redux
+  // A utiliser pour récolter les données
   const dispatch = useDispatch();
+  // State hooks pour les champs du formulaire et les erreurs
   const [cardholderName, setCardholderName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpMM, setCardExpMM] = useState('');
@@ -20,6 +23,7 @@ function Form() {
     cardExpYY: '',
     cardCvc: '',
   });
+  // Obtention de l'année en cours
   const currentYear = new Date().getFullYear();
 
 
@@ -28,9 +32,9 @@ function Form() {
    * @returns {boolean} - Indique si le formulaire est valide.
    */
   const isValid = () => {
-   
     let validForm = false;
   
+    // Vérification des conditions de validité des champs du formulaire
     if (
       cardholderName.length > 0 &&
       /[0-9 ]{19}$/.test(cardNumber) &&
@@ -50,10 +54,13 @@ function Form() {
    * @param {Object} e - L'événement de soumission du formulaire.
    */
   const handleSubmit = (e) => {
+    // Empêcher le comportement par défaut du formulaire
     e.preventDefault();
 
+    // Validation du formulaire
     const validForm = isValid();
 
+    // Vérification des erreurs et mise à jour des messages d'erreur
     if (!validForm) {
       if (!cardCvc.length || cardCvc.length < 3) {
         setErrors({cardCvc: 'CVC is required (3 digits)'});
@@ -71,10 +78,11 @@ function Form() {
         setErrors({ cardExpYY: 'Card expired'});
       }
     } else { 
+       // Réinitialisation des erreurs si le formulaire est valide
       setErrors({});
     };
 
-    // si isValid = true alors je soumets le formulaire
+    // Soumission du formulaire si il est valide
     if (isValid) {
       const data = {
         cardholderName,
@@ -83,8 +91,11 @@ function Form() {
         cardExpYY,
         cardCvc,
       };
+      // Dispatch de l'action Redux pour soumettre le formulaire
       dispatch(submitForm(data));
+      // Mise à jour du local storage pour indiquer que le formulaire a été soumis
       localStorage.setItem("formSubmitted", JSON.stringify(true));
+      // Rechargement de la page
       window.location.reload();
     }
 
@@ -109,6 +120,7 @@ function Form() {
   function formatCardNumber(value) {
     const v = value.replace(/[^0-9]/gi, "").substr(0, 16);
     const parts = [];
+    // Séparation du numéro de carte en groupes de 4 chiffres
     for (let i = 0; i < v.length; i += 4) {
       parts.push(v.substr(i, 4));
     }
@@ -121,6 +133,7 @@ function Form() {
    * @returns {string} - Les chiffres de la carte formatés.
    */
   function formatCardDigits(value) {
+    // Suppression des caractères non numériques
     const vExp = value.replace(/[^0-9]/gi, "");
     return vExp;
   }
@@ -133,6 +146,7 @@ function Form() {
     const name = event.target.name;
     const value = event.target.value;
 
+    // Mise à jour des champs du formulaire et dispatch de l'action Redux
     switch (name) {
       case 'cardholderName':
         setCardholderName(formatCardholderName(value));

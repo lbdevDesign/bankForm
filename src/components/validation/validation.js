@@ -1,8 +1,16 @@
 import React from 'react';
 import validationImg from "../../assets/icon-complete.svg"
 
+/**
+ * Validation component displayed after successful form submission.
+ * @component
+ */
 const Validation = () => {
 
+  /**
+   * Click event handler for the "Continue" button.
+   * Resets the formSubmitted flag in local storage and reloads the page.
+   */
   function onClick() {
     localStorage.setItem("formSubmitted", JSON.stringify(false));
     window.location.reload();
