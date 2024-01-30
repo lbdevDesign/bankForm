@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { setFormValue, submitForm } from '../../redux/action';
 
 /**
- * Composant Formulaire pour la saisie des détails de carte de crédit.
- * Utilise react-hook-form pour la gestion du formulaire et interagit avec Redux.
+ * Composant Form pour la saisie des informations de la carte de crédit.
+ * @component
  */
 function Form() {
   const dispatch = useDispatch();
@@ -13,39 +13,70 @@ function Form() {
   const [cardExpMM, setCardExpMM] = useState('');
   const [cardExpYY, setCardExpYY] = useState('');
   const [cardCvc, setCardCvc] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    cardholderName: '',
+    cardNumber: '',
+    cardExpMM: '',
+    cardExpYY: '',
+    cardCvc: '',
+  });
+  const currentYear = new Date().getFullYear();
 
+
+  /**
+   * Fonction de validation du formulaire.
+   * @returns {boolean} - Indique si le formulaire est valide.
+   */
+  const isValid = () => {
+   
+    let validForm = false;
+  
+    if (
+      cardholderName.length > 0 &&
+      /[0-9 ]{19}$/.test(cardNumber) &&
+      cardExpMM.length === 2 &&
+      cardExpYY.length === 2 &&
+      cardCvc.length === 3 &&
+      parseInt(cardExpMM, 10) <= 12 && 
+      parseInt(cardExpYY, 10) >= currentYear % 100 
+    ) {
+      validForm = true;
+    }
+    return validForm;
+  };
+
+  /**
+   * Fonction appelée lors de la soumission du formulaire.
+   * @param {Object} e - L'événement de soumission du formulaire.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate form fields
-    const isValid = () => {
-      return (
-        cardholderName.length &&
-        cardNumber.match(/^[0-9]{16}$/) &&
-        cardExpMM.length &&
-        cardExpYY.length &&
-        cardCvc.length === 3
-      );
-    };
+    const validForm = isValid();
 
-    if (!isValid) {
-      if (!cardholderName) {
-        setErrors({cardholderName: 'Cardholder name is required'});
-      } if (!cardNumber.match(/^[0-9]{16}$/)) {
-        setErrors({cardNumber: 'Card number is invalid'});
-      } if (!cardExpMM.length || cardExpMM.length < 2) {
-        setErrors({ cardExpMM: 'Expiration is required'});
+    console.log(validForm);
+
+    if (!validForm) {
+      if (!cardCvc.length || cardCvc.length < 3) {
+        setErrors({cardCvc: 'CVC is required (3 digits)'});
       } if (!cardExpYY.length || cardExpYY.length < 2) {
         setErrors({ cardExpYY: 'Expiration is required'});
-      } if (!cardCvc.length || cardCvc.length < 3) {
-        setErrors({cardCvc: 'CVC is required (3 digits)'});
+      } if (!cardExpMM.length || cardExpMM.length < 2) {
+        setErrors({ cardExpMM: 'Expiration is required'});
+      } if (!cardNumber.match(/^[0-9 ]{19}$/)) {
+        setErrors({cardNumber: 'Card number is invalid (16 digits)'});
+      } if (cardholderName.length === 0) {
+        setErrors({cardholderName: 'Cardholder name is required'});
+      } if (!(parseInt(cardExpMM, 10) <= 12)) {
+        setErrors({ cardExpMM: 'Month not valid'});
+      } if (!(parseInt(cardExpYY, 10) >= currentYear % 100)) {
+        setErrors({ cardExpYY: 'Card expired'});
       }
-    } else {
+    } else { 
       setErrors({});
     };
 
-    // Form is valid, submit to Redux action
+    // si isValid = true alors je soumets le formulaire
     if (isValid) {
       const data = {
         cardholderName,
@@ -57,16 +88,24 @@ function Form() {
       dispatch(submitForm(data));
     }
 
-    console.log(errors);
-
   };
 
+  /**
+   * Fonction pour formater le nom du titulaire de la carte.
+   * @param {string} name - Le nom du titulaire de la carte.
+   * @returns {string} - Le nom formaté.
+   */
   function formatCardholderName(name) {
     const words = name.split(' ');
     const formattedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
     return formattedWords.join(' ');
   }
 
+   /**
+   * Fonction pour formater le numéro de carte.
+   * @param {string} value - Le numéro de carte.
+   * @returns {string} - Le numéro de carte formaté.
+   */
   function formatCardNumber(value) {
     const v = value.replace(/[^0-9]/gi, "").substr(0, 16);
     const parts = [];
@@ -76,6 +115,20 @@ function Form() {
     return parts.join(" ");
   }
 
+  /**
+   * Fonction pour formater les chiffres de la carte (exp. MM, exp. YY, CVC).
+   * @param {string} value - Les chiffres de la carte.
+   * @returns {string} - Les chiffres de la carte formatés.
+   */
+  function formatCardDigits(value) {
+    const vExp = value.replace(/[^0-9]/gi, "");
+    return vExp;
+  }
+
+  /**
+   * Fonction appelée lorsqu'un champ du formulaire est modifié.
+   * @param {Object} event - L'événement de modification.
+   */
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -101,15 +154,22 @@ function Form() {
         setCardCvc(value);
         dispatch(setFormValue('cardCvc', value));
         break;
+      default:
+        break;
     }
-
-    console.log(cardNumber);
   };
 
   useEffect(() => {
+    // Formater les champs de la carte lorsqu'ils sont modifiés
     const formattedCardNumber = formatCardNumber(cardNumber);
     setCardNumber(formattedCardNumber);
-  }, [cardNumber]);
+    const formattedExpirationMM = formatCardDigits(cardExpMM);
+    setCardExpMM(formattedExpirationMM);
+    const formattedExpirationYY = formatCardDigits(cardExpYY);
+    setCardExpYY(formattedExpirationYY);
+    const formattedCvc = formatCardDigits(cardCvc);
+    setCardCvc(formattedCvc);
+  }, [cardNumber, cardExpMM, cardExpYY, cardCvc]);
 
 
   return (
@@ -156,6 +216,7 @@ function Form() {
               type="tel"
               placeholder="MM"
               maxLength={2} 
+              pattern="[0-9]{2}"
               value={cardExpMM}
               onChange={handleChange}
             />
@@ -165,11 +226,13 @@ function Form() {
               type="tel"
               placeholder="YY"
               maxLength={2} 
+              pattern="[0-9]*$"
               value={cardExpYY}
               onChange={handleChange}
             />
           </div>
-          {(errors.cardExpMM || errors.cardExpYY) && <p className="error-message">{errors.cardExpMM}</p>}
+          {errors.cardExpMM && <p className="error-message">{errors.cardExpMM}</p>}
+          { errors.cardExpYY && <p className="error-message">{errors.cardExpYY}</p>}
         </div>
 
         {/* Champ pour le CVC */}
@@ -181,6 +244,7 @@ function Form() {
             type="tel"
             placeholder="e.g. 123"
             maxLength={3} 
+            pattern="[0-9]*$"
             value={cardCvc}
             onChange={handleChange}
           />
