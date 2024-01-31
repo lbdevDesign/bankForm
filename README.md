@@ -1,3 +1,28 @@
+# BankForm
+
+This project is a React application for handling credit card information. It includes a form for users to input their credit card details.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Scripts](#scripts)
+- [Dependencies](#dependencies)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Installation
+
+To install the project dependencies, use either yarn or npm:
+
+```bash
+# Using yarn
+yarn install
+
+# Using npm
+npm install
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
