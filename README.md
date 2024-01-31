@@ -2,15 +2,6 @@
 
 This project is a React application for handling credit card information. It includes a form for users to input their credit card details.
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Scripts](#scripts)
-- [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Installation
 
 To install the project dependencies, use either yarn or npm:
@@ -41,11 +32,11 @@ Visit http://localhost:3000 to view the application.
 
 The project includes the following scripts:
 
-start: Start the development server.
-build: Build the application for production.
-test: Run tests using Jest.
-predeploy: Triggered before deploying, runs the build script.
-deploy: Deploy the application using gh-pages.
+start: Start the development server.<br>
+build: Build the application for production.<br>
+test: Run tests using Jest.<br>
+predeploy: Triggered before deploying, runs the build script.<br>
+deploy: Deploy the application using gh-pages.<br>
 
 To run these scripts, you can use either yarn or npm :
 
