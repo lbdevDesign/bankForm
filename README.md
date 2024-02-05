@@ -3,8 +3,8 @@
 This project is a React application for handling credit card information. It includes a form for users to input their credit card details.
 
 ![made-with-react](https://img.shields.io/badge/-ReactJs-61DAFB?style=for-the-badge&logo=react&logoColor=FFFFFF)
-![image]((https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white
-))
+![image](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white
+)
 ![image]({BadgeURLHere})
 
 ## Installation
